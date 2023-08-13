@@ -1,0 +1,32 @@
+{% extends 'socnet/base.html' %}
+{% block title %}{{ shtab.name }}{% endblock %}</title>
+  
+{% block content %}
+<br> 
+<div style="margin-left:3em">
+ <h2>{{ shtab.name }}</h2>
+ <br> 
+ <table class="table" style="width:50em">
+	 <thead>
+	    <tr>
+	      <th scope="col">Platform</th>
+	      <th scope="col">Followers</th>
+	      <th scope="col">Last posted</th>
+	    </tr>
+	  </thead>
+	  <tbody>
+	  	{% for page in shtab.page_set.all %}
+	    <tr>
+	      <td><a href="{{ page.url }}" target="blank">{{ page.platform.name }}</a></td>
+	      <td>{{ page.followers_count }}</td>
+	      <td>{% with sorted=page.post_set.all|dictsortreversed:"posted_on" %}
+	    		{{ sorted.0.posted_on }}
+			  {% endwith %}
+	      </td>
+	    </tr>
+	   {% endfor %}
+	  </tbody>
+ </table>
+</div>
+
+{% endblock %}
