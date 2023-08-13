@@ -1,0 +1,36 @@
+[program:smm_dj]
+directory = /home/fate/smm_dj/
+User = root
+Group = www-data
+command = uwsgi --ini smm_dj_uwsgi.ini
+autostart=true
+autorestart=true
+stderr_logfile = /home/fate/smm_dj/log.log
+stdout_logfile = /home/fate/smm_dj/log.log
+stopsignal=INT
+stopasgroup = true
+
+[program:smm_worker]
+directory = /home/fate/smm_dj/
+User = root
+Group = www-data
+command = celery -A smm_dj worker -l info
+autostart=true
+autorestart=true
+stderr_logfile = /home/fate/smm_dj/log.log
+stdout_logfile = /home/fate/smm_dj/log.log
+stopsignal=INT
+stopasgroup = true
+stopwaitsecs = 600
+
+[program:smm_beat]
+directory = /home/fate/smm_dj/
+User = root
+Group = www-data
+command = celery -A smm_dj beat -l info --scheduler django_celery_beat.schedulers:DatabaseScheduler
+autostart=true
+autorestart=true
+stderr_logfile = /home/fate/smm_dj/log.log
+stdout_logfile = /home/fate/smm_dj/log.log
+stopsignal=INT
+stopasgroup = true
